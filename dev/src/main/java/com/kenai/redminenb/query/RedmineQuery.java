@@ -258,8 +258,10 @@ public final class RedmineQuery {
             }
             ParameterValue[] paramValues = p.getValue();
             if (StringUtils.isNotBlank(ParameterValue.flattenList(paramValues))) {
-                if ( "is_subject".equals(parameter) ) {
-                    if( StringUtils.isNotBlank(queryStr) ) {
+                if ("is_subject".equals(parameter) && StringUtils.isNotBlank(queryStr)) {
+                    if (queryStr.startsWith("!")) {
+                        m.put("subject", "!~" + queryStr.substring(1));
+                    } else {
                         m.put("subject", "~" + queryStr);
                     }
                 } else if ("is_description".equals(parameter)) {
